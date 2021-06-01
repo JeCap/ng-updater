@@ -1,0 +1,39 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "prefer-arrow-functions",
+    "@typescript-eslint"
+  ],
+  "overrides": [
+    {
+      "excludedFiles": [
+        "*spec.ts"
+      ],
+      "files": [
+        "*.ts"
+      ],
+      "parserOptions": {
+        "project": [
+          "tsconfig.json"
+        ]
+      },
+      "rules": {
+        "prefer-arrow-functions/prefer-arrow-functions": [
+          "error",
+          {
+            "classPropertiesAllowed": false,
+            "disallowPrototype": false,
+            "returnStyle": "implicit",
+            "singleReturnOnly": true
+          }
+        ]
+      }
+    }
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ]
+}

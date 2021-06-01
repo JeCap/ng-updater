@@ -1,0 +1,41 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "lint",
+			"problemMatcher": [
+				"$eslint-stylish"
+			],
+			"label": "npm: lint",
+			"detail": "vscode lint task",
+			"group": "build"
+		},
+		{
+			"type": "typescript",
+			"tsconfig": "tsconfig.json",
+			"option": "watch",
+			"problemMatcher": [
+				"$tsc-watch"
+			],
+			"group": "build",
+			"label": "tsc: watch - tsconfig.json"
+		},
+		{
+			"type": "npm",
+			"script": "test",
+			"group": "test",
+			"problemMatcher": [],
+			"label": "npm: test",
+			"detail": "jest"
+		},
+		{
+			"type": "npm",
+			"script": "build:prod",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: build:prod",
+			"detail": "npx rimraf ./prod && npx tsc -p ./tsconfig.prod.json && npm pack"
+		}
+	]
+}

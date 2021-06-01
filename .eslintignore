@@ -1,0 +1,12 @@
+.git
+.mvn
+.vscode
+backup
+bnd
+de-almex-cascara-angular-lib-workspace.packages
+dist
+doc
+e2e
+node_modules
+utils
+jest.config.js
