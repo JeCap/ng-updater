@@ -8,14 +8,14 @@
   "overrides": [
     {
       "excludedFiles": [
-        "*spec.ts"
+        // "*spec.ts"
       ],
       "files": [
         "*.ts"
       ],
       "parserOptions": {
         "project": [
-          "tsconfig.json"
+          // "tsconfig.json"
         ]
       },
       "rules": {

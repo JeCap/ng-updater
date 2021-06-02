@@ -1,11 +1,8 @@
 {
-  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./prod",
-    "sourceMap": true,
     "declaration": true,
+    "outDir": "./prod",
+    "sourceMap": true
   },
-  "exclude": [
-    "src/**/*spec.ts"
-  ]
+  "extends": "./tsconfig.json"
 }

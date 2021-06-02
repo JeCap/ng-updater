@@ -14,7 +14,8 @@
     "ngu": "prod/main.js"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
+    "coverage": "jest --coverage --watch",
     "lint": "eslint \"./src/**/*\"",
     "build:prod": "npx rimraf ./prod && npx tsc -p ./tsconfig.prod.json && npm pack"
   },
@@ -34,6 +35,7 @@
     "jest-html-reporters": "^2.1.6",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.2",
+    "ts-node": "^10.0.0",
     "typescript": "4.2.4"
   }
 }

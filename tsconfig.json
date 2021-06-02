@@ -1,22 +1,25 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
-    "esModuleInterop": true,
-    "target": "ESNext",
-    "moduleResolution": "node",
     "declaration": true,
-    "sourceMap": true,
-    "outDir": "./dist/",
     "downlevelIteration": false,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "target": "ESNext",
     "typeRoots": [
       "node_modules/@types"
-    ],
+    ]
   },
   "exclude": [
+    "prod",
     "node_modules",
-    "src/**/*.spec.ts"
+    "dist",
+    "src/**/*.spec.ts",
+    "src/**/*.spec.data.ts"
   ],
   "lib": [
     "es2018"
