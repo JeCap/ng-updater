@@ -10,4 +10,5 @@ module.exports = {
       "openReport": false
     }]
   ],
+  "projects": ["<rootDir>/src/*"]
 };

@@ -4,28 +4,41 @@
 
 import { exit } from "process";
 import { of } from "rxjs";
-import { map, mergeMap } from "rxjs/operators";
+import { last, map, mergeMap, tap } from "rxjs/operators";
 import { exec$, ExecResult } from "./exec/exec";
 import { buildNgUpdateCmd, parse$ } from "./parser/ng-update";
 
 exec$('ng update')
   .pipe(
-    mergeMap(execResult => parse$(execResult.stdout)),
+    tap(execResult => {
+      if (execResult.stdout.current !== undefined) {
+        console.log(execResult.stdout.current);
+      }
+    }),
+    last(),
+    mergeMap(execResult => parse$(execResult.stdout.toString())),
     map(ngUpdatePackages => buildNgUpdateCmd(ngUpdatePackages)),
     mergeMap(cmd => {
       if (cmd !== undefined) {
         return exec$(cmd);
       }
-      return of<ExecResult>({
-        error: null,
-        stdout: 'Nothing to do. Good job.',
-        stderr: ''
-      })
-    })
+      const goodJob = new ExecResult();
+      goodJob.stdout.current = '\nng-updater: Nothing to do. Good job.';
+      goodJob.closed = true;
+      goodJob.code = 0;
+      return of(goodJob);
+    }),
+    tap(execResult => {
+      if (execResult.stdout.current !== undefined) {
+        console.log(execResult.stdout.current);
+      }
+
+    }),
+    last(),
   )
   .subscribe(r => {
-    console.log(r.stdout);
-    exit(0);
+    console.log(`ng-updater: exit ${r.code}`);
+    exit(r.code);
   })
 
 

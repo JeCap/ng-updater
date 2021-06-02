@@ -2,9 +2,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./prod",
-    "sourceMap": false,
+    "sourceMap": true,
+    "declaration": true,
   },
   "exclude": [
-    "src/ng update.output.ts"
+    "src/**/*spec.ts"
   ]
 }
