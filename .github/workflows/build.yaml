@@ -1,0 +1,302 @@
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason'
+        required: true
+        default: 'trigger build release'
+  push:
+    branches:
+      - "**"
+
+jobs:
+  # ---------------------------------------------------------------
+  # JOB: setup-node
+  # ---------------------------------------------------------------
+  setup-node:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+      - name: setup nodejs
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: register npm.pkg.github.com
+        run: |
+          echo "registry=http://registry.npmjs.org" > "./.npmrc"
+          echo "@almex-hannover:registry=https://npm.pkg.github.com" >> "./.npmrc"
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PACKAGES_DEV }}"  >> "./.npmrc"
+
+      - name: cache[node modules]
+        id: node-modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules-complete
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: cache[node modules] - install if necessary
+        if: steps.node-modules.outputs.cache-hit != 'true'
+        run: |
+          echo cache NOT exists
+          npm ci
+
+      # - name: update package versions
+      #   run: node_modules/.bin/semantic-release --dry-run --plugins "@semantic-release/commit-analyzer,@semantic-release/release-notes-generator, @semantic-release/exec" --analyzeCommits @semantic-release/commit-analyzer --verifyRelease @semantic-release/exec --verifyReleaseCmd 'node ./tools/version/update-versions.js -v ${nextRelease.version} -t ${nextRelease.gitTag} -h ${nextRelease.gitHead} -b ${branch.name} -c ${nextRelease.channel}'
+
+      # - name: cache[updated-versions]
+      #   id: updated-versions
+      #   uses: actions/cache@v2
+      #   env:
+      #     cache-name: updated-versions
+      #   with:
+      #     path: |
+      #       **/package.json
+      #       projects/**/version.ts
+      #     key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ github.run_id }}
+
+
+  # ---------------------------------------------------------------
+  # JOB: lint
+  # ---------------------------------------------------------------
+  lint:
+    needs: [setup-node]
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+      - name: setup nodejs
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: cache[node modules]
+        id: node-modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules-complete
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: run lint
+        run: npm run lint
+
+  # ---------------------------------------------------------------
+  # JOB: test
+  # ---------------------------------------------------------------
+  test:
+    needs: [setup-node]
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+      - name: setup nodejs
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: cache[node modules]
+        id: node-modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules-complete
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      # - name: cache[updated-versions]
+      #   id: updated-versions
+      #   uses: actions/cache@v2
+      #   env:
+      #     cache-name: updated-versions
+      #   with:
+      #     path: |
+      #       **/package.json
+      #       projects/**/version.ts
+      #     key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ github.run_id }}
+
+
+      - name: run tests
+        run: npm run test
+
+  # ---------------------------------------------------------------
+  # JOB: coverage
+  # ---------------------------------------------------------------
+  coverage:
+    needs: [setup-node]
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+      - name: setup nodejs
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: cache[node modules]
+        id: node-modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules-complete
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      # - name: cache[updated-versions]
+      #   id: updated-versions
+      #   uses: actions/cache@v2
+      #   env:
+      #     cache-name: updated-versions
+      #   with:
+      #     path: |
+      #       **/package.json
+      #       projects/**/version.ts
+      #     key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ github.run_id }}
+
+
+      - name: run coverage
+        run: npm run coverage
+
+  # ---------------------------------------------------------------
+  # JOB: build
+  # ---------------------------------------------------------------
+  build:
+    needs: [lint, test, coverage]
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+      - name: setup nodejs
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: cache[node modules]
+        id: node-modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules-complete
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: cache[build]
+        id: build
+        uses: actions/cache@v2
+        env:
+          cache-name: build
+        with:
+          path: ./prod
+          key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ github.run_id }}
+
+      # - name: cache[updated-versions]
+      #   id: updated-versions
+      #   uses: actions/cache@v2
+      #   env:
+      #     cache-name: updated-versions
+      #   with:
+      #     path: |
+      #       **/package.json
+      #       projects/**/version.ts
+      #     key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ github.run_id }}
+
+
+      - name: build
+        run: npm run build
+
+  # ---------------------------------------------------------------
+  # JOB: release
+  # ---------------------------------------------------------------
+  release:
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_PUSH_TO_PROTECTED_BRANCHES_TOKEN }}
+
+      - name: setup nodejs
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: cache[node modules]
+        id: node-modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules-complete
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: cache[build]
+        id: build
+        uses: actions/cache@v2
+        env:
+          cache-name: build
+        with:
+          path: ./prod
+          key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ github.run_id }}
+
+
+      # - name: show dist package
+      #   run: |
+      #     echo ---DIST
+      #     cat ./prod/package.json
+      #     echo --------------------------------------------------------------
+
+      - name: register npm.pkg.github.com
+        run: |
+          echo "registry=http://registry.npmjs.org" > "./.npmrc"
+          echo "@almex-hannover:registry=https://npm.pkg.github.com" >> "./.npmrc"
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}"  >> "./.npmrc"
+
+      - name: semantic release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_AUTHOR_NAME: ${{secrets.SEMANTIC_RELEASE_GIT_AUTHOR_NAME}}
+          GIT_AUTHOR_EMAIL: ${{secrets.SEMANTIC_RELEASE_GIT_AUTHOR_NAME}}
+          GIT_COMMITTER_NAME: ${{secrets.SEMANTIC_RELEASE_GIT_AUTHOR_NAME}}
+          GIT_COMMITTER_EMAIL: ${{secrets.SEMANTIC_RELEASE_GIT_AUTHOR_NAME}}
+        run: npx semantic-release
