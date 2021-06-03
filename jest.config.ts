@@ -1,13 +1,13 @@
 // jest.config.ts
-import type { Config } from "@jest/types";
+import type { Config } from '@jest/types';
 
 // Sync object
 const config: Config.InitialOptions = {
   verbose: true,
-  preset: "ts-jest",
-  testEnvironment: "node",
+  preset: 'ts-jest',
+  testEnvironment: 'node',
   reporters: [
-    "default",
+    'default',
     // [
     //   "jest-html-reporters",
     //   {
@@ -18,9 +18,9 @@ const config: Config.InitialOptions = {
     //   },
     // ],
   ],
-  coverageProvider: "babel",
+  coverageProvider: 'babel',
   collectCoverage: false,
-  coverageReporters: ["json", "lcov", "text"],
+  coverageReporters: ['json', 'lcov', 'text'],
   coverageThreshold: {
     global: {
       branches: 70,

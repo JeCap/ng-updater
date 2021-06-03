@@ -1,12 +1,16 @@
-import { exec } from "child_process";
-import { Observable } from "rxjs";
+import { exec } from 'child_process';
+import { Observable } from 'rxjs';
 
 export class StdOutput {
   private _current: string;
-  private _toString: string;
+  private _toString = '';
 
   public toString = (): string => {
-    return this._toString.replace(/\n$/g, "");
+    try {
+      return this._toString.replace(/\n$/g, '');
+      // eslint-disable-next-line no-empty
+    } catch (error) {}
+    return '';
   };
 
   public get current(): string {
@@ -15,7 +19,7 @@ export class StdOutput {
 
   public set current(current: string) {
     if (current !== undefined) {
-      this._current = current.replace(/\n$/g, "");
+      this._current = current.replace(/\n$/g, '');
       this._toString = this._toString + current;
     } else {
       this._current = undefined;
@@ -31,25 +35,25 @@ export class ExecResult {
 }
 
 export const exec$ = (name: string): Observable<ExecResult> =>
-  new Observable<ExecResult>((obs) => {
-    console.log("execute: ", name);
+  new Observable<ExecResult>(obs => {
+    process.stdout.write(`execute: ${name}\n`);
 
     const ls = exec(name);
     const state: ExecResult = new ExecResult();
 
-    ls.stdout.on("data", (data) => {
-      state.stdout.current = data.replace(/\n$/g, "");
+    ls.stdout.on('data', data => {
+      state.stdout.current = data.replace(/\n$/g, '');
       state.stderr.current = undefined;
       obs.next(state);
     });
 
-    ls.stderr.on("data", (data) => {
+    ls.stderr.on('data', data => {
       state.stdout.current = undefined;
-      state.stderr.current = data.replace(/\n$/g, "");
+      state.stderr.current = data.replace(/\n$/g, '');
       obs.next(state);
     });
 
-    ls.on("close", (code) => {
+    ls.on('close', code => {
       state.code = code;
       state.closed = true;
       state.stdout.current = undefined;
