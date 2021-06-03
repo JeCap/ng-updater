@@ -1,0 +1,80 @@
+{
+  "extends": "./.releaserc.extended.js",
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/npm",
+    "@semantic-release/github"
+  ],
+  "branches": [
+    "+([0-9])?(.{+([0-9]),x}).x",
+    "main",
+    "next",
+    "next-major",
+    {
+      "name": "beta",
+      "prerelease": true,
+      "channel": "beta"
+    },
+    {
+      "name": "alpha",
+      "prerelease": true,
+      "channel": "alpha"
+    },
+    {
+      "name": "snapshot",
+      "prerelease": true,
+      "channel": "snapshot"
+    }
+  ],
+  "preset": "angular",
+  "releaseRules": [
+    {
+      "breaking": true,
+      "release": "major"
+    },
+    {
+      "revert": true,
+      "release": "patch"
+    },
+    {
+      "type": "BREAKINGCHANGE",
+      "release": "major"
+    },
+    {
+      "type": "sprint",
+      "release": "minor"
+    },
+    {
+      "type": "patch",
+      "release": "patch"
+    },
+    {
+      "type": "feat",
+      "release": "minor"
+    },
+    {
+      "type": "fix",
+      "release": "patch"
+    },
+    {
+      "type": "revert",
+      "release": "patch"
+    },
+    {
+      "type": "perf",
+      "release": "patch"
+    },
+    {
+      "type": "style",
+      "release": "patch"
+    },
+    {
+      "type": "refactor",
+      "release": "patch"
+    }
+  ],
+  "parserOpts": {
+    "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
+  }
+}

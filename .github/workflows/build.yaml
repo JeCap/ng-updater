@@ -288,7 +288,7 @@ jobs:
       - name: register npm.pkg.github.com
         run: |
           echo "registry=http://registry.npmjs.org" > "./.npmrc"
-          echo "@almex-hannover:registry=https://npm.pkg.github.com" >> "./.npmrc"
+          echo "@jecap:registry=https://npm.pkg.github.com" >> "./.npmrc"
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}"  >> "./.npmrc"
 
       - name: semantic release

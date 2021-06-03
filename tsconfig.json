@@ -15,6 +15,7 @@
     ]
   },
   "exclude": [
+    "*.ts",
     "prod",
     "node_modules",
     "dist",

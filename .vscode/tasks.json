@@ -31,11 +31,11 @@
 		},
 		{
 			"type": "npm",
-			"script": "build:prod",
+			"script": "build",
 			"group": "build",
 			"problemMatcher": [],
-			"label": "npm: build:prod",
-			"detail": "npx rimraf ./prod && npx tsc -p ./tsconfig.prod.json && npm pack"
+			"label": "npm: build",
+			"detail": "npx rimraf ./prod && npx tsc -p ./tsconfig.prod.json"
 		}
 	]
 }
