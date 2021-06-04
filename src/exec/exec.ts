@@ -6,11 +6,7 @@ export class StdOutput {
   private _toString = '';
 
   public toString = (): string => {
-    try {
-      return this._toString.replace(/\n$/g, '');
-      // eslint-disable-next-line no-empty
-    } catch (error) {}
-    return '';
+    return this._toString.replace(/\n$/g, '');
   };
 
   public get current(): string {
