@@ -1,4 +1,4 @@
-import { last, map, mergeMap } from 'rxjs/operators';
+import { last, map, mergeMap, tap } from 'rxjs/operators';
 import { exec$, ExecResult, StdOutput } from './exec/exec';
 import { buildNgUpdateCmd, parse$ } from './parser/ng-update';
 import {
@@ -21,6 +21,9 @@ describe('main complex test cases', () => {
         mergeMap(execResult => parse$(execResult.stdout.toString())),
         map(ngUpdatePackages => buildNgUpdateCmd(ngUpdatePackages)),
         // TEST: map "ng update" to "dir"
+        tap(v => {
+          console.log(v);
+        }),
         map(() => 'dir'),
         mergeMap(cmd => exec$(cmd)),
         last(),

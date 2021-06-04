@@ -32,7 +32,7 @@ export class ExecResult {
 
 export const exec$ = (name: string): Observable<ExecResult> =>
   new Observable<ExecResult>(obs => {
-    process.stdout.write(`execute: ${name}\n`);
+    console.log(`execute: ${name}`);
 
     const ls = exec(name);
     const state: ExecResult = new ExecResult();
