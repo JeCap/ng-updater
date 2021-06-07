@@ -19,11 +19,16 @@ export interface NgUpdateResult {
 export const parse$ = (ngUpdateInfo: string): Observable<NgUpdate[]> =>
   new Observable<NgUpdate[]>(obs => {
     const rx = new RegExp(
-      /(@.*?)( *)(\d+\.\d+\.\d+)( -> )(\d+\.\d+\.\d+)( *)(ng update)( *?)(@.*)/g
+      /(@.*?)( *)(\d+\.\d+\.\d+)( -> )(\d+\.\d+\.\d+)( *)(ng update)( *?)(@.*)\n/gm
     );
     const matches = [...ngUpdateInfo.matchAll(rx)];
     const result = matches
-      .filter(item => item[1] === item[9])
+      .filter(item => {
+        if (item[1] === item[9]) {
+          return true;
+        }
+        console.log(`item failed  ${item[1]}===${item[9]}`);
+      })
       .map(item => ({
         command: item[7],
         package: item[1],

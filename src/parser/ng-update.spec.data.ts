@@ -1,5 +1,4 @@
-export const ngUpdateOutput = `ng update
-Using package manager: 'npm'
+export const ngUpdateOutput = `Using package manager: 'npm'
 Collecting installed dependencies...
 Found 73 dependencies.
     We analyzed your package.json, there are some packages to update:
@@ -7,12 +6,14 @@ Found 73 dependencies.
       Name                                    Version                  Command to update
      -------------------------------------------------------------------------------------
       @angular-eslint/schematics              12.0.0 -> 12.1.0         ng update @angular-eslint/schematics
-      @angular/cdk                            12.0.1 -> 12.0.2         ng update @angular/cdk
-      @angular/cli                            12.0.1 -> 12.0.2         ng update @angular/cli
-      @angular/core                           12.0.1 -> 12.0.2         ng update @angular/core
+      @angular/cdk                            12.0.1 -> 12.0.3         ng update @angular/cdk
+      @angular/cli                            12.0.1 -> 12.0.3         ng update @angular/cli
+      @angular/core                           12.0.1 -> 12.0.3         ng update @angular/core
 
     There might be additional packages which don't provide 'ng update' capabilities that are outdated.
-    You can update the additional packages by running the update command of your package manager.`;
+    You can update the additional packages by running the update command of your package manager.
+
+`;
 
 export const ngUpdateOutputInstalled = `ng update --force --allow-dirty @angular-eslint/schematics @angular/cdk @angular/cli @angular/core
 Using package manager: 'npm'

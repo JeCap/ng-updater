@@ -1,5 +1,5 @@
 import { last, map, mergeMap, tap } from 'rxjs/operators';
-import { exec$, ExecResult, StdOutput } from './exec/exec';
+import { exec$ } from './exec/exec';
 import { buildNgUpdateCmd, parse$ } from './parser/ng-update';
 import {
   ngUpdateOutput,
@@ -13,12 +13,14 @@ describe('main complex test cases', () => {
       .pipe(
         last(),
         // TEST: map "dir" result to ngUpdateOutput
-        map((execResult): ExecResult => {
-          const stdout = new StdOutput();
-          stdout.current = ngUpdateOutput;
-          return { ...execResult, stdout };
-        }),
-        mergeMap(execResult => parse$(execResult.stdout.toString())),
+        map(execResult => ({
+          ...execResult,
+          stdout: {
+            current: ngUpdateOutput,
+            all: ngUpdateOutput,
+          },
+        })),
+        mergeMap(execResult => parse$(execResult.stdout.all)),
         map(ngUpdatePackages => buildNgUpdateCmd(ngUpdatePackages)),
         // TEST: map "ng update" to "dir"
         tap(v => {
@@ -28,11 +30,13 @@ describe('main complex test cases', () => {
         mergeMap(cmd => exec$(cmd)),
         last(),
         // TEST: map "dir" result to ngUpdateOutputInstalled
-        map((execResult): ExecResult => {
-          const stdout = new StdOutput();
-          stdout.current = ngUpdateOutputInstalled;
-          return { ...execResult, stdout };
-        })
+        map(execResult => ({
+          ...execResult,
+          stdout: {
+            current: ngUpdateOutputInstalled,
+            all: ngUpdateOutputInstalled,
+          },
+        }))
       )
       .subscribe(execResult => {
         expect(execResult.closed).toBe(true);

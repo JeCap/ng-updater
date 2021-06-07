@@ -51,7 +51,7 @@ exec$('ng update')
     last(),
     mergeMap(execResult => {
       if (execResult.code === 0) {
-        return parse$(execResult.stdout.toString());
+        return parse$(execResult.stdout.all);
       }
       // execution failed
       console.warn('ngUpdatePackages: discovery of the packets failed');

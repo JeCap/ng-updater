@@ -19,7 +19,9 @@
     "test:watch": "jest --watchAll",
     "coverage": "jest --coverage",
     "lint": "eslint \"./src/**/*\"",
-    "build": "npx rimraf ./prod && npx tsc -p ./tsconfig.prod.json"
+    "build": "npx rimraf ./prod && npx tsc -p ./tsconfig.prod.json",
+    "build:pack": "npx rimraf ./prod && npx tsc -p ./tsconfig.prod.json && npm pack",
+    "build:install": "npm i -g jecap-ng-updater-0.0.0.tgz"
   },
   "license": "ISC",
   "dependencies": {

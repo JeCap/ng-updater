@@ -15,7 +15,7 @@ describe('ng-update', () => {
       ).toEqual('12.0.1');
       expect(
         r.find(item => item.package === '@angular/cli')?.version.to
-      ).toEqual('12.0.2');
+      ).toEqual('12.0.3');
       expect(r.find(item => item.package === '@angular/cli')?.command).toEqual(
         'ng update'
       );

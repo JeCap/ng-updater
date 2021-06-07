@@ -5,7 +5,7 @@ describe('exec', () => {
   test('exec should execute command "dir"', done => {
     exec$('dir').subscribe(r => {
       expect(r.stdout).toBeDefined();
-      expect(r.stdout.toString().length).toBeGreaterThan(0);
+      expect(r.stdout.all.length).toBeGreaterThan(0);
       done();
     });
   });
@@ -15,7 +15,7 @@ describe('exec', () => {
       .pipe(filter(v => v.closed === true))
       .subscribe(r => {
         expect(r).toBeDefined();
-        expect(r.stderr.current).toBeDefined();
+        expect(r.stderr.all).toBeDefined();
         expect(r.code !== 0).toBeTruthy();
         done();
       });
