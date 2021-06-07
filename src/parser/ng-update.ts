@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { writeln } from '../output/write';
 
 export interface NgVersion {
   from: string;
@@ -27,7 +28,7 @@ export const parse$ = (ngUpdateInfo: string): Observable<NgUpdate[]> =>
         if (item[1] === item[9]) {
           return true;
         }
-        console.log(`item failed  ${item[1]}===${item[9]}`);
+        writeln(`item failed  ${item[1]}===${item[9]}`);
       })
       .map(item => ({
         command: item[7],

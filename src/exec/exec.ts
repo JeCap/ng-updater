@@ -1,5 +1,6 @@
 import { exec } from 'child_process';
 import { Observable } from 'rxjs';
+import { writeln } from '../output/write';
 
 export class StdOutput {
   current = '';
@@ -15,12 +16,12 @@ export class ExecResult {
 
 export const exec$ = (name: string): Observable<ExecResult> =>
   new Observable<ExecResult>(obs => {
-    console.log(`ngUpdatePackages: : execute ${name}`);
+    writeln(`ng-updater: execute ${name}`);
 
     const ls = exec(name);
     let state: ExecResult = new ExecResult();
 
-    ls.stdout.on('data', data => {
+    ls.stdout.on('data', (data: string) => {
       state = {
         ...state,
         stdout: {

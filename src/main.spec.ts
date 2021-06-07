@@ -1,5 +1,6 @@
 import { last, map, mergeMap, tap } from 'rxjs/operators';
 import { exec$ } from './exec/exec';
+import { write } from './output/write';
 import { buildNgUpdateCmd, parse$ } from './parser/ng-update';
 import {
   ngUpdateOutput,
@@ -24,7 +25,7 @@ describe('main complex test cases', () => {
         map(ngUpdatePackages => buildNgUpdateCmd(ngUpdatePackages)),
         // TEST: map "ng update" to "dir"
         tap(v => {
-          console.log(v);
+          write(v);
         }),
         map(() => 'dir'),
         mergeMap(cmd => exec$(cmd)),

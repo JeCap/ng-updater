@@ -7,6 +7,7 @@ import { exit } from 'process';
 import { of } from 'rxjs';
 import { last, map, mergeMap, tap } from 'rxjs/operators';
 import { exec$, ExecResult } from './exec/exec';
+import { write, writeln } from './output/write';
 import { buildNgUpdateCmd, parse$ } from './parser/ng-update';
 
 const args = arg.default({
@@ -15,12 +16,12 @@ const args = arg.default({
 });
 
 const exitProg = (exitCode: number) => {
-  console.log(`ng-updater: exit with code ${exitCode}\n`);
+  writeln(`ng-updater: exit with code ${exitCode}`);
   exit(exitCode);
 };
 
 if (args['--help']) {
-  console.log(`Execute angular cli command "ng update" and install all new packages.
+  writeln(`Execute angular cli command "ng update" and install all new packages.
 
   ngu [options]
   or
@@ -35,17 +36,17 @@ Options
 }
 
 if (args['--dryRun']) {
-  console.log('ng-updater: Running in `dryRun` mode');
+  writeln('ng-updater: Running in `dryRun` mode');
 }
 
 exec$('ng update')
   .pipe(
     tap(execResult => {
       if (execResult.stdout.current !== undefined) {
-        console.log(`${execResult.stdout.current}`);
+        write(`${execResult.stdout.current}`);
       }
       if (execResult.stderr.current !== undefined) {
-        console.log(`${execResult.stderr.current}`);
+        write(`${execResult.stderr.current}`);
       }
     }),
     last(),
@@ -54,22 +55,21 @@ exec$('ng update')
         return parse$(execResult.stdout.all);
       }
       // execution failed
-      console.warn('ngUpdatePackages: discovery of the packets failed');
+      writeln('ng-updater: discovery of the packets failed');
       exitProg(execResult.code);
     }),
     tap(ngUpdatePackages => {
       if (ngUpdatePackages.length > 0) {
-        console.log(
-          `ngUpdatePackages: ${ngUpdatePackages.length} package(s) ready for update`
+        writeln(
+          `\nngUpdatePackages: ${ngUpdatePackages.length} package(s) ready for update`
         );
         ngUpdatePackages.forEach(item => {
-          console.log(
-            `ngUpdatePackages:   - ${item.package} ${item.version.to}`
-          );
+          writeln(`ng-updater:   - ${item.package} ${item.version.to}`);
         });
       } else {
-        console.log(`ngUpdatePackages: no packages found for update`);
+        writeln(`\nngUpdatePackages: no packages found for update`);
       }
+      writeln('');
     }),
     map(ngUpdatePackages => buildNgUpdateCmd(ngUpdatePackages)),
 
@@ -77,7 +77,7 @@ exec$('ng update')
       if (args['--dryRun']) {
         const dryRun = new ExecResult();
         if (cmd !== undefined) {
-          console.log(`execute: ${cmd}`);
+          writeln(`ng-updater: execute ${cmd}`);
         }
         dryRun.stdout.current = 'ng-updater: dryRun ist active. Nothing to do.';
         dryRun.closed = true;
@@ -96,10 +96,10 @@ exec$('ng update')
     }),
     tap(execResult => {
       if (execResult.stdout.current !== undefined) {
-        console.log(`${execResult.stdout.current}`);
+        write(`${execResult.stdout.current}`);
       }
       if (execResult.stderr.current !== undefined) {
-        console.log(`${execResult.stderr.current}`);
+        write(`${execResult.stderr.current}`);
       }
     }),
     last()

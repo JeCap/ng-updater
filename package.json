@@ -21,7 +21,8 @@
     "lint": "eslint \"./src/**/*\"",
     "build": "npx rimraf ./prod && npx tsc -p ./tsconfig.prod.json",
     "build:pack": "npx rimraf ./prod && npx tsc -p ./tsconfig.prod.json && npm pack",
-    "build:install": "npm i -g jecap-ng-updater-0.0.0.tgz"
+    "build:install": "npm i -g jecap-ng-updater-0.0.0.tgz",
+    "build:uninstall": "npm rm -g @jecap/ng-updater --force"
   },
   "license": "ISC",
   "dependencies": {
