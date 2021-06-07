@@ -10,9 +10,13 @@ Install directly to your angular project
 
 `npm install @jecap/ng-updater -D`
 
-or globally
+globally
 
 `npm install @jecap/ng-updater -g`
+
+or execute with npx
+
+`npx @jecap/ng-updater`
 
 ### Remember
 
@@ -26,6 +30,10 @@ registry=http://registry.npmjs.org
 ## how to use
 
 That's simple. Execute `ngu` or `npx ngu` in your shell.
+
+> For a dry run, add argument `-- dryRun`
+
+If you have installed `ng-updater` locally or globally, you can run it with `ngu`, otherwise you run it with `npx @jecap/ng-updater`
 
 ```dos
 > ngu
