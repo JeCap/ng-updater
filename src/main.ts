@@ -11,8 +11,32 @@ import { buildNgUpdateCmd, parse$ } from './parser/ng-update';
 
 const args = arg.default({
   '--dryRun': Boolean,
+  '--help': Boolean,
 });
-// const args = arg();
+
+const exitProg = (exitCode: number) => {
+  console.log(`ng-updater: exit with code ${exitCode}\n`);
+  exit(exitCode);
+};
+
+if (args['--help']) {
+  console.log(`Execute angular cli command "ng update" and install all new packages.
+
+  ngu [options]
+  or
+  npx @jecap/ng-updater [options]
+
+Options
+
+  --help            Show help
+  --dryRun          Run in dryMode. Nothing will be installed.
+`);
+  exitProg(0);
+}
+
+if (args['--dryRun']) {
+  console.log('ng-updater: Running in `dryRun` mode');
+}
 
 exec$('ng update')
   .pipe(
@@ -27,18 +51,26 @@ exec$('ng update')
     last(),
     mergeMap(execResult => parse$(execResult.stdout.toString())),
     tap(ngUpdatePackages => {
-      console.log(
-        `ngUpdatePackages: ${ngUpdatePackages.length} package(s) ready for update`
-      );
-      ngUpdatePackages.forEach(item => {
-        console.log(`ngUpdatePackages:   - ${item.package} ${item.version.to}`);
-      });
+      if (ngUpdatePackages.length > 0) {
+        console.log(
+          `ngUpdatePackages: ${ngUpdatePackages.length} package(s) ready for update`
+        );
+        ngUpdatePackages.forEach(item => {
+          console.log(
+            `ngUpdatePackages:   - ${item.package} ${item.version.to}`
+          );
+        });
+      } else {
+        console.log(`ngUpdatePackages: no packages found for update`);
+      }
     }),
     map(ngUpdatePackages => buildNgUpdateCmd(ngUpdatePackages)),
     mergeMap(cmd => {
       if (args['--dryRun']) {
         const dryRun = new ExecResult();
-        console.log(`execute: ${cmd}`);
+        if (cmd !== undefined) {
+          console.log(`execute: ${cmd}`);
+        }
         dryRun.stdout.current = 'ng-updater: dryRun ist active. Nothing to do.';
         dryRun.closed = true;
         dryRun.code = 0;
@@ -65,6 +97,5 @@ exec$('ng update')
     last()
   )
   .subscribe(r => {
-    console.log(`ng-updater: ${r.code}\n`);
-    exit(r.code);
+    exitProg(r.code);
   });
