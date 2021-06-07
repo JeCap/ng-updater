@@ -28,8 +28,8 @@ if (args['--help']) {
 
 Options
 
-  --help            Show help
   --dryRun          Run in dryMode. Nothing will be installed.
+  --help            Show help
 `);
   exitProg(0);
 }
@@ -49,7 +49,14 @@ exec$('ng update')
       }
     }),
     last(),
-    mergeMap(execResult => parse$(execResult.stdout.toString())),
+    mergeMap(execResult => {
+      if (execResult.code === 0) {
+        return parse$(execResult.stdout.toString());
+      }
+      // execution failed
+      console.warn('ngUpdatePackages: discovery of the packets failed');
+      exitProg(execResult.code);
+    }),
     tap(ngUpdatePackages => {
       if (ngUpdatePackages.length > 0) {
         console.log(
@@ -65,6 +72,7 @@ exec$('ng update')
       }
     }),
     map(ngUpdatePackages => buildNgUpdateCmd(ngUpdatePackages)),
+
     mergeMap(cmd => {
       if (args['--dryRun']) {
         const dryRun = new ExecResult();

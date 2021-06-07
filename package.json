@@ -16,6 +16,7 @@
   },
   "scripts": {
     "test": "jest",
+    "test:watch": "jest --watchAll",
     "coverage": "jest --coverage",
     "lint": "eslint \"./src/**/*\"",
     "build": "npx rimraf ./prod && npx tsc -p ./tsconfig.prod.json"

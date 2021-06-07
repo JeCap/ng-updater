@@ -23,10 +23,10 @@
 		},
 		{
 			"type": "npm",
-			"script": "test",
+			"script": "test:watch",
 			"group": "test",
 			"problemMatcher": [],
-			"label": "npm: test",
+			"label": "npm: test:watch",
 			"detail": "jest"
 		},
 		{
