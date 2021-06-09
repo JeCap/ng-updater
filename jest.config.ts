@@ -23,7 +23,7 @@ const config: Config.InitialOptions = {
   coverageReporters: ['json', 'lcov', 'text'],
   coverageThreshold: {
     global: {
-      branches: 70,
+      branches: 50,
       functions: 80,
       lines: 80,
       statements: 80,
