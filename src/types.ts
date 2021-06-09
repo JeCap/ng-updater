@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import simpleGit, { Options, SimpleGit, StatusResult } from 'simple-git';
+import simpleGit, { SimpleGit, StatusResult } from 'simple-git';
 import { ExecResult } from './exec/exec';
 import { NgUpdateResult, parseResult$ } from './parser/ng-update';
 
@@ -34,10 +34,6 @@ export async function commitUpdates(mainresult: MainResult): Promise<void> {
     )
     .join('');
 
-  const opt: Options = {
-    author: 'ng-updater <ng-updater@capsius.de>',
-  };
-
   const modified = s.modified.filter(item =>
     ['package.json', 'package-lock.json'].find(searched => item === searched)
   );
@@ -45,8 +41,7 @@ export async function commitUpdates(mainresult: MainResult): Promise<void> {
     // add and commit this list
     await git.commit(
       `chore(ng-updater): auto update angular eco system \n\n${commitBody}`,
-      modified,
-      opt
+      modified
     );
 
     await git.push();
