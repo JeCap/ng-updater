@@ -2,10 +2,10 @@ on:
   workflow_dispatch:
     inputs:
       reason:
-        description: 'Reason'
+        description: "Reason"
         required: true
-        default: 'trigger build release'
-  push:
+        default: "trigger build release"
+  pull_request:
     branches:
       - "**"
 
@@ -52,7 +52,6 @@ jobs:
 
       # - name: update package versions
       #   run: node_modules/.bin/semantic-release --dry-run --plugins "@semantic-release/commit-analyzer,@semantic-release/release-notes-generator, @semantic-release/exec" --analyzeCommits @semantic-release/commit-analyzer --verifyRelease @semantic-release/exec --verifyReleaseCmd 'node ./tools/version/update-versions.js -v ${nextRelease.version} -t ${nextRelease.gitTag} -h ${nextRelease.gitHead} -b ${branch.name} -c ${nextRelease.channel}'
-
       # - name: cache[updated-versions]
       #   id: updated-versions
       #   uses: actions/cache@v2
@@ -63,7 +62,6 @@ jobs:
       #       **/package.json
       #       projects/**/version.ts
       #     key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ github.run_id }}
-
 
   # ---------------------------------------------------------------
   # JOB: lint
@@ -137,7 +135,6 @@ jobs:
       #       projects/**/version.ts
       #     key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ github.run_id }}
 
-
       - name: run tests
         run: npm run test
 
@@ -180,7 +177,6 @@ jobs:
       #       **/package.json
       #       projects/**/version.ts
       #     key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ github.run_id }}
-
 
       - name: run coverage
         run: npm run coverage
@@ -234,7 +230,6 @@ jobs:
       #       projects/**/version.ts
       #     key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ github.run_id }}
 
-
       - name: build
         run: npm run build
 
@@ -277,7 +272,6 @@ jobs:
         with:
           path: ./prod
           key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ github.run_id }}
-
 
       # - name: show dist package
       #   run: |
