@@ -9,6 +9,7 @@ import { last, map, mergeMap, tap } from 'rxjs/operators';
 import { exec$, ExecResult } from './exec/exec';
 import { write, writeln } from './output/write';
 import { buildNgUpdateCmd, parse$ } from './parser/ng-update';
+import { commitUpdates, mainResult$ } from './types';
 
 const args = arg.default({
   '--dryRun': Boolean,
@@ -102,8 +103,15 @@ exec$('ng update')
         write(`${execResult.stderr.current}`);
       }
     }),
-    last()
+    last(),
+    mergeMap(execResult => mainResult$(execResult))
   )
   .subscribe(r => {
-    exitProg(r.code);
+    if (args['--dryRun']) {
+      exitProg(r.execResult.code);
+    } else {
+      commitUpdates(r).then(() => {
+        exitProg(r.execResult.code);
+      });
+    }
   });

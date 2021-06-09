@@ -27,7 +27,8 @@
   "license": "ISC",
   "dependencies": {
     "arg": "^5.0.0",
-    "rxjs": "^6.6.7"
+    "rxjs": "^6.6.7",
+    "simple-git": "^2.39.1"
   },
   "devDependencies": {
     "@semantic-release/exec": "^5.0.0",
