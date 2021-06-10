@@ -1,35 +1,17 @@
 {
-  "name": "@jecap/ng-updater",
-  "version": "0.0.0",
   "author": "Jens Capsius",
-  "description": "",
-  "main": "./prod/main.js",
-  "engines": {
-    "node": ">=4.2.0"
-  },
-  "type": "commonjs",
-  "files": [
-    "prod"
-  ],
   "bin": {
     "ngu": "prod/main.js"
   },
-  "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watchAll",
-    "coverage": "jest --coverage",
-    "lint": "eslint \"./src/**/*\"",
-    "build": "npx rimraf ./prod && npx tsc -p ./tsconfig.prod.json",
-    "build:pack": "npx rimraf ./prod && npx tsc -p ./tsconfig.prod.json && npm pack",
-    "build:install": "npm i -g jecap-ng-updater-0.0.0.tgz",
-    "build:uninstall": "npm rm -g @jecap/ng-updater --force"
+  "bugs": {
+    "url": "https://github.com/JeCap/ng-updater/issues"
   },
-  "license": "ISC",
   "dependencies": {
     "arg": "^5.0.0",
     "rxjs": "^6.6.7",
     "simple-git": "^2.39.1"
   },
+  "description": "",
   "devDependencies": {
     "@semantic-release/exec": "^5.0.0",
     "@semantic-release/git": "^9.0.0",
@@ -47,5 +29,39 @@
     "ts-jest": "^27.0.2",
     "ts-node": "^10.0.0",
     "typescript": "4.2.4"
-  }
+  },
+  "engines": {
+    "node": ">=4.2.0"
+  },
+  "files": [
+    "prod"
+  ],
+  "homepage": "https://github.com/JeCap/ng-updater#readme",
+  "license": "ISC",
+  "main": "./prod/main.js",
+  "name": "@jecap/ng-updater",
+  "readme": "readme.md",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Almex-Hannover/de-almex-cascara-angular-ops-api.git"
+  },
+  "scripts": {
+    "build": "npx rimraf ./prod && npx tsc -p ./tsconfig.prod.json",
+    "build:install": "npm i -g jecap-ng-updater-0.0.0.tgz",
+    "build:pack": "npx rimraf ./prod && npx tsc -p ./tsconfig.prod.json && npm pack",
+    "build:uninstall": "npm rm -g @jecap/ng-updater --force",
+    "coverage": "jest --coverage",
+    "lint": "eslint \"./src/**/*\"",
+    "test": "jest",
+    "test:watch": "jest --watchAll"
+  },
+  "type": "commonjs",
+  "version": "0.0.0",
+  "keywords": [
+    "ng-updater",
+    "angular",
+    "ng-cli",
+    "update",
+    "ng udate"
+  ]
 }
