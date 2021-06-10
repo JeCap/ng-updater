@@ -37,6 +37,13 @@
     "prod"
   ],
   "homepage": "https://github.com/JeCap/ng-updater#readme",
+  "keywords": [
+    "ng-updater",
+    "angular",
+    "ng-cli",
+    "update",
+    "ng udate"
+  ],
   "license": "ISC",
   "main": "./prod/main.js",
   "name": "@jecap/ng-updater",
@@ -56,12 +63,5 @@
     "test:watch": "jest --watchAll"
   },
   "type": "commonjs",
-  "version": "0.0.0",
-  "keywords": [
-    "ng-updater",
-    "angular",
-    "ng-cli",
-    "update",
-    "ng udate"
-  ]
+  "version": "0.0.0"
 }
