@@ -61,9 +61,7 @@ exec$('ng update')
     }),
     tap(ngUpdatePackages => {
       if (ngUpdatePackages.length > 0) {
-        writeln(
-          `\nngUpdatePackages: ${ngUpdatePackages.length} package(s) ready for update`
-        );
+        writeln(`\nngUpdatePackages: ${ngUpdatePackages.length} package(s) ready for update`);
         ngUpdatePackages.forEach(item => {
           writeln(`ng-updater:   - ${item.package} ${item.version.to}`);
         });

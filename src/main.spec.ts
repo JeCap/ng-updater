@@ -3,10 +3,7 @@ import { last, map, mergeMap, tap } from 'rxjs/operators';
 import { exec$, ExecResult } from './exec/exec';
 import { write } from './output/write';
 import { buildNgUpdateCmd, parse$ } from './parser/ng-update';
-import {
-  ngUpdateOutput,
-  ngUpdateOutputInstalled,
-} from './parser/ng-update.spec.data';
+import { ngUpdateOutput, ngUpdateOutputInstalled } from './parser/ng-update.spec.data';
 import { mainResult$ } from './types';
 
 describe('main complex test cases', () => {

@@ -1,6 +1,15 @@
 import { exec } from 'child_process';
-import { Observable } from 'rxjs';
+import { interval, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { writeln } from '../output/write';
+
+class test {
+  constructor() {
+    const t = 3;
+
+    interval(1000).pipe(map(v => v));
+  }
+}
 
 export class StdOutput {
   current = '';

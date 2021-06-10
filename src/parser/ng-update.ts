@@ -19,9 +19,7 @@ export interface NgUpdateResult {
 
 export const parse$ = (ngUpdateInfo: string): Observable<NgUpdate[]> =>
   new Observable<NgUpdate[]>(obs => {
-    const rx = new RegExp(
-      /(@.*?)( *)(\d+\.\d+\.\d+)( -> )(\d+\.\d+\.\d+)( *)(ng update)( *?)(@.*)\n/gm
-    );
+    const rx = new RegExp(/(@.*?)( *)(\d+\.\d+\.\d+)( -> )(\d+\.\d+\.\d+)( *)(ng update)( *?)(@.*)\n/gm);
     const matches = [...ngUpdateInfo.matchAll(rx)];
     const result = matches
       .filter(item => {
@@ -43,9 +41,7 @@ export const parse$ = (ngUpdateInfo: string): Observable<NgUpdate[]> =>
   });
 
 //
-export const parseResult$ = (
-  ngUpdateResult: string
-): Observable<NgUpdateResult[]> =>
+export const parseResult$ = (ngUpdateResult: string): Observable<NgUpdateResult[]> =>
   new Observable<NgUpdateResult[]>(obs => {
     const rx = new RegExp(
       /^( .*)(Updating package.json with dependency )(@.*)( @.*")(\d+\.\d+\.\d+)(" \(was ")(\d+\.\d+\.\d+)/gm
@@ -63,7 +59,4 @@ export const parseResult$ = (
   });
 
 export const buildNgUpdateCmd = (ngUpdate: NgUpdate[]): string =>
-  ngUpdate.length > 0
-    ? 'ng update --force --allow-dirty ' +
-      ngUpdate.map(item => item.package).join(' ')
-    : undefined;
+  ngUpdate.length > 0 ? 'ng update --force --allow-dirty ' + ngUpdate.map(item => item.package).join(' ') : undefined;

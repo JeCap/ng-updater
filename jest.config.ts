@@ -3,24 +3,25 @@ import type { Config } from '@jest/types';
 
 // Sync object
 const config: Config.InitialOptions = {
-  verbose: true,
+  verbose: false,
   preset: 'ts-jest',
   testEnvironment: 'node',
   reporters: [
     'default',
-    // [
-    //   "jest-html-reporters",
-    //   {
-    //     publicPath: "./reports",
-    //     filename: "test.report.html",
-    //     expand: true,
-    //     openReport: false,
-    //   },
-    // ],
+    [
+      'jest-html-reporters',
+      {
+        publicPath: './reports',
+        filename: 'test.report.html',
+        expand: true,
+        openReport: false,
+      },
+    ],
   ],
   coverageProvider: 'babel',
-  collectCoverage: false,
+  collectCoverage: true,
   coverageReporters: ['json', 'lcov', 'text'],
+  coveragePathIgnorePatterns: ['node_modules', 'types.ts'],
   coverageThreshold: {
     global: {
       branches: 50,

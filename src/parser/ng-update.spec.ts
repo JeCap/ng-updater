@@ -1,24 +1,14 @@
 import { buildNgUpdateCmd, parse$, parseResult$ } from './ng-update';
-import {
-  ngUpdateOutput,
-  ngUpdateOutputGoodWork,
-  ngUpdateOutputInstalled,
-} from './ng-update.spec.data';
+import { ngUpdateOutput, ngUpdateOutputGoodWork, ngUpdateOutputInstalled } from './ng-update.spec.data';
 
 describe('ng-update', () => {
   test('Parse$ should be executed and found updates', done => {
     parse$(ngUpdateOutput).subscribe(r => {
       expect(r).toBeDefined();
       expect(r.length).toEqual(4);
-      expect(
-        r.find(item => item.package === '@angular/cli')?.version.from
-      ).toEqual('12.0.1');
-      expect(
-        r.find(item => item.package === '@angular/cli')?.version.to
-      ).toEqual('12.0.3');
-      expect(r.find(item => item.package === '@angular/cli')?.command).toEqual(
-        'ng update'
-      );
+      expect(r.find(item => item.package === '@angular/cli')?.version.from).toEqual('12.0.1');
+      expect(r.find(item => item.package === '@angular/cli')?.version.to).toEqual('12.0.3');
+      expect(r.find(item => item.package === '@angular/cli')?.command).toEqual('ng update');
       done();
     });
   });
@@ -35,12 +25,8 @@ describe('ng-update', () => {
     parseResult$(ngUpdateOutputInstalled).subscribe(r => {
       expect(r).toBeDefined();
       expect(r.length).toEqual(14);
-      expect(
-        r.find(item => item.package === '@angular/cli')?.version.from
-      ).toEqual('12.0.1');
-      expect(
-        r.find(item => item.package === '@angular/cli')?.version.to
-      ).toEqual('12.0.2');
+      expect(r.find(item => item.package === '@angular/cli')?.version.from).toEqual('12.0.1');
+      expect(r.find(item => item.package === '@angular/cli')?.version.to).toEqual('12.0.2');
       done();
     });
   });
