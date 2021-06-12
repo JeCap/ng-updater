@@ -1,13 +1,15 @@
 {
   "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
     "**/.DS_Store": true,
+    "**/.git": true,
+    "**/.hg": true,
+    "**/.svn": true,
+    "**/CVS": true,
     "dist": true,
-    "prod": true,
-    "node_modules": true
+    "node_modules": true,
+    "prod": true
   },
+  "prettier.arrowParens": "avoid",
+  "prettier.printWidth": 120,
   "prettier.useEditorConfig": false
 }
