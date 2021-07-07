@@ -50,7 +50,7 @@
   "readme": "readme.md",
   "repository": {
     "type": "git",
-    "url": "git@github.com:Almex-Hannover/de-almex-cascara-angular-ops-api.git"
+    "url": "git@github.com:JeCap/ng-updater.git"
   },
   "scripts": {
     "build": "npx rimraf ./prod && npx tsc -p ./tsconfig.prod.json",
