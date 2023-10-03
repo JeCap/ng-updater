@@ -50,18 +50,7 @@ jobs:
           echo cache NOT exists
           npm ci
 
-      # - name: update package versions
-      #   run: node_modules/.bin/semantic-release --dry-run --plugins "@semantic-release/commit-analyzer,@semantic-release/release-notes-generator, @semantic-release/exec" --analyzeCommits @semantic-release/commit-analyzer --verifyRelease @semantic-release/exec --verifyReleaseCmd 'node ./tools/version/update-versions.js -v ${nextRelease.version} -t ${nextRelease.gitTag} -h ${nextRelease.gitHead} -b ${branch.name} -c ${nextRelease.channel}'
-      # - name: cache[updated-versions]
-      #   id: updated-versions
-      #   uses: actions/cache@v2
-      #   env:
-      #     cache-name: updated-versions
-      #   with:
-      #     path: |
-      #       **/package.json
-      #       projects/**/version.ts
-      #     key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ github.run_id }}
+
 
   # ---------------------------------------------------------------
   # JOB: lint
@@ -124,17 +113,6 @@ jobs:
           path: ./node_modules
           key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
-      # - name: cache[updated-versions]
-      #   id: updated-versions
-      #   uses: actions/cache@v2
-      #   env:
-      #     cache-name: updated-versions
-      #   with:
-      #     path: |
-      #       **/package.json
-      #       projects/**/version.ts
-      #     key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ github.run_id }}
-
       - name: run tests
         run: npm run test
 
@@ -166,17 +144,6 @@ jobs:
         with:
           path: ./node_modules
           key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-      # - name: cache[updated-versions]
-      #   id: updated-versions
-      #   uses: actions/cache@v2
-      #   env:
-      #     cache-name: updated-versions
-      #   with:
-      #     path: |
-      #       **/package.json
-      #       projects/**/version.ts
-      #     key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ github.run_id }}
 
       - name: run coverage
         run: npm run coverage
@@ -219,17 +186,6 @@ jobs:
           path: ./prod
           key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ github.run_id }}
 
-      # - name: cache[updated-versions]
-      #   id: updated-versions
-      #   uses: actions/cache@v2
-      #   env:
-      #     cache-name: updated-versions
-      #   with:
-      #     path: |
-      #       **/package.json
-      #       projects/**/version.ts
-      #     key: ${{ runner.os }}-${{ matrix.node-version }}-${{ env.cache-name }}-${{ github.run_id }}
-
       - name: build
         run: npm run build
 
@@ -245,10 +201,16 @@ jobs:
         node-version: [14.x]
 
     steps:
+      # - name: checkout repository
+      #   uses: actions/checkout@v2
+      #   with:
+      #     token: ${{ secrets.GH_PUSH_TO_PROTECTED_BRANCHES_TOKEN }}
+
       - name: checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GH_PUSH_TO_PROTECTED_BRANCHES_TOKEN }}
+          persist-credentials: false # <--- this
+
 
       - name: setup nodejs
         uses: actions/setup-node@v1
