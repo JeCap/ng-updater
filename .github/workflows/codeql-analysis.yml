@@ -19,7 +19,12 @@ on:
     branches: [ main ]
   schedule:
     - cron: '18 1 * * 6'
-
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Reason"
+        required: true
+        default: "run manually codeQL"
 jobs:
   analyze:
     name: Analyze
